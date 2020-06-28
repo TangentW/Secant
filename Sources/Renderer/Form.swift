@@ -5,8 +5,6 @@
 //  Created by Tangent on 2020/6/22.
 //
 
-import Foundation
-
 public protocol Form {
     
     var rows: Rows { get }
@@ -20,7 +18,7 @@ public extension Form {
     }
     
     var sections: Sections {
-        [Section(id: UUID(), rows: rows._rows)]
+        [Section(id: "", rows: rows._rows)]
     }
 }
 

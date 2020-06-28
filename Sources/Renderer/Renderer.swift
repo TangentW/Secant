@@ -35,7 +35,7 @@ public extension Renderer {
     
     @inlinable
     func render<Rows>(_ rows: Rows) where Rows: Collection, Rows.Element == AnyRow {
-        render([Section(id: UUID(), rows: rows)])
+        render([Section(id: "", rows: rows)])
     }
     
     func render<Sections>(_ sections: Sections) where Sections: Collection, Sections.Element == Section {
