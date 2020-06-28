@@ -21,14 +21,29 @@ class ViewController: UIViewController {
     }
 }
 
+let viewController = FormViewController(form: DemoForm())
+
 struct DemoForm: Form {
     
     @State
     var isExpanded = false
     
+    @State
+    var isEnabled = true
+
     @RowsBuilder
     var rows: Rows {
-        Switch(title: "Toggle", isOn: $isExpanded)
-        Label("Hello World").height(isExpanded ? 150 : 50)
+        Switch(title: "Expand", isOn: $isExpanded)
+        Switch(title: "Toggle", isOn: $isEnabled)
+            .onRender {
+                $0.cell.textLabel?.textColor = .red
+            }
+        Label("Hello World")
+            .detail(isEnabled ? "⭕️" : "❌")
+            .height(isExpanded ? 150 : 50)
+            .onDidSelect {
+                print("DidSelect")
+                $0.tableView.deselectRow(at: $0.indexPath, animated: true)
+            }
     }
 }
