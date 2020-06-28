@@ -9,7 +9,7 @@ import UIKit
 
 public struct Switch: Equatable {
     
-    public init(title: String, isOn: Binding<Bool>) {
+    public init(_ title: String, isOn: Binding<Bool>) {
         _title = title
         _isOn = isOn
     }

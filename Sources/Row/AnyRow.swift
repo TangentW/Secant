@@ -22,7 +22,7 @@ public struct AnyRow {
 
     public init<N>(_ row: N) where N: Row {
         _row = row
-        _id = { AnyHashable(row.id) }
+        _id = { row.id }
         _cellType = { row.cellType }
         _reuseId = { row.reuseId }
         _install = { cell in

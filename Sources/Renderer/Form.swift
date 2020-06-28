@@ -5,6 +5,8 @@
 //  Created by Tangent on 2020/6/22.
 //
 
+import Foundation
+
 public protocol Form {
     
     var rows: Rows { get }
@@ -13,8 +15,12 @@ public protocol Form {
 
 public extension Form {
     
+    var rows: Rows {
+        fatalError("rows has not been implemented")
+    }
+    
     var sections: Sections {
-        [Section(id: "", rows: rows._rows)]
+        [Section(id: UUID(), rows: rows._rows)]
     }
 }
 

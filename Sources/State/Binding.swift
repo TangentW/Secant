@@ -20,7 +20,7 @@ public struct Binding<Value> {
     public init<ID>(id: ID, get: @escaping () -> Value, set: @escaping (Value) -> Void) where ID: Hashable {
         _get = get
         _set = set
-        _id = AnyHashable(id)
+        _id = id
     }
     
     @inlinable

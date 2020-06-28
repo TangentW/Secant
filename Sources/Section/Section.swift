@@ -7,7 +7,7 @@
 
 import DifferenceKit
 
-public struct Section {
+public struct Section: Identifiable {
     
     public let id: AnyHashable
     
@@ -58,7 +58,7 @@ public struct Section {
         rows: Rows,
         footer: AnyHeaderFooter? = nil
     ) where ID: Hashable, Rows: Swift.Collection, Rows.Element == AnyRow {
-        self.id = AnyHashable(id)
+        self.id = id
         self.header = header
         self.rows = Array(rows)
         self.footer = footer

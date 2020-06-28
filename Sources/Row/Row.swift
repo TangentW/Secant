@@ -8,9 +8,8 @@
 import UIKit
 import DifferenceKit
 
-public protocol Row: Differentiable, Rows {
+public protocol Row: Identifiable, Differentiable, Rows {
     
-    associatedtype ID: Hashable = UUID
     associatedtype Cell: UITableViewCell = UITableViewCell
     associatedtype Coordinator = Void
 
@@ -43,12 +42,6 @@ public extension Row {
 }
 
 // MARK: - Default
-
-public extension Row where ID == UUID {
-    
-    @inlinable
-    var id: ID { UUID() }
-}
 
 public extension Row where Coordinator == Void {
     
