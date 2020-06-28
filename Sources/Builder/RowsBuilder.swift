@@ -34,11 +34,16 @@ public struct RowsBuilder {
 
 // MARK: - Extension
 
-extension Optional: Rows where Wrapped: Row {
+extension Optional: Rows where Wrapped: Rows {
     
     @inlinable
     public var _rows: [AnyRow] {
-        [self?.eraseToAnyRow()].compactMap { $0 }
+        switch self {
+        case .some(let rows):
+            return rows._rows
+        case .none:
+            return []
+        }
     }
 }
 

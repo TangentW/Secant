@@ -12,6 +12,11 @@ import Foundation
 public struct Binding<Value> {
     
     @inlinable
+    public static func constant(_ value: Value) -> Binding {
+        .init(get: { value }, set: { _ in })
+    }
+
+    @inlinable
     public init<ID>(id: ID, get: @escaping () -> Value, set: @escaping (Value) -> Void) where ID: Hashable {
         _get = get
         _set = set

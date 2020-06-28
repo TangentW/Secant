@@ -62,8 +62,9 @@ private extension Renderer {
             deleteRowsAnimation: animation.deleteRows,
             insertRowsAnimation: animation.insertRows,
             reloadRowsAnimation: animation.reloadRows,
-            interrupt: { $0.changeCount > 30 }
-        ) { _set(data: $0) }
+            interrupt: { $0.changeCount > 30 },
+            setData: _set(data:)
+        )
     }
     
     var _scheduler: Scheduler {
