@@ -21,10 +21,6 @@ public protocol HeaderFooter: ContentEquatable {
     
     // Size of HeaderFooter
     var height: CGFloat? { get }
-    
-    // Callbacks
-    func willDisplay(context: Context)
-    func didEndDisplaying(context: Context)
 }
 
 public extension HeaderFooter {
@@ -59,16 +55,14 @@ public extension HeaderFooter where Self: Equatable {
 public extension HeaderFooter {
     
     @inlinable
-    func willDisplay(context: Context) { }
-    
-    @inlinable
-    func didEndDisplaying(context: Context) { }
+    var height: CGFloat? { nil }
 }
 
 // MARK: - Protocol
 
 public extension HeaderFooter {
     
+    @inlinable
     func isContentEqual(to source: Self) -> Bool {
         !shouldRerender(old: source)
     }

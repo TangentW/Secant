@@ -42,20 +42,6 @@ public struct AnyHeaderFooter {
             return headerFooter.shouldRerender(old: old)
         }
         _height = { headerFooter.height }
-        _willDisplay = {
-            guard let context = $0.map(headerFooterType: HF.self) else {
-                assertionFailure()
-                return
-            }
-            headerFooter.willDisplay(context: context)
-        }
-        _didEndDisplaying = {
-            guard let context = $0.map(headerFooterType: HF.self) else {
-                assertionFailure()
-                return
-            }
-            headerFooter.didEndDisplaying(context: context)
-        }
     }
     
     private let _headerFooter: Any
@@ -72,10 +58,6 @@ public struct AnyHeaderFooter {
     let _shouldRerender: (Self) -> Bool
     @usableFromInline
     let _height: () -> CGFloat?
-    @usableFromInline
-    let _willDisplay: (Context) -> Void
-    @usableFromInline
-    let _didEndDisplaying: (Context) -> Void
 }
 
 extension AnyHeaderFooter: HeaderFooter {
@@ -92,8 +74,4 @@ extension AnyHeaderFooter: HeaderFooter {
     public func shouldRerender(old: Self) -> Bool { _shouldRerender(old) }
     @inlinable
     public var height: CGFloat? { _height() }
-    @inlinable
-    public func willDisplay(context: Context) { _willDisplay(context) }
-    @inlinable
-    public func didEndDisplaying(context: Context) { _didEndDisplaying(context) }
 }

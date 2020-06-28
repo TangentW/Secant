@@ -20,7 +20,7 @@ internal final class Scheduler {
 
     @usableFromInline
     func schedule(immediately: Bool, _ work: @escaping () -> Void) {
-        _workItem?.cancel()
+        _workItem.take()?.cancel()
         
         if immediately {
             work()
@@ -35,5 +35,5 @@ internal final class Scheduler {
         _workItem = newItem
     }
     
-    private weak var _workItem: DispatchWorkItem?
+    private var _workItem: DispatchWorkItem?
 }

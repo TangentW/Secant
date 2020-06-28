@@ -39,7 +39,8 @@ public extension Renderer {
     }
     
     func render<Sections>(_ sections: Sections) where Sections: Collection, Sections.Element == Section {
-        _scheduler.schedule(immediately: !_isDisplayed) {
+        _scheduler.schedule(immediately: !_isDisplayed) { [weak self] in
+            guard let self = self else { return }
             let changeset = StagedChangeset(source: self.data, target: Array(sections))
             self._update(batch: changeset)
         }
@@ -89,20 +90,6 @@ public extension Renderer {
         self[section: section].rows
     }
     
-    @inlinable
-    subscript(section section: Int) -> Section {
-        data[section]
-    }
-    
-    subscript(headerFooter headerFooterType: HeaderFooterType) -> AnyHeaderFooter? {
-        switch headerFooterType {
-        case .header(let section):
-            return self[section: section].header
-        case .footer(let section):
-            return self[section: section].footer
-        }
-    }
-
     subscript(rowContext indexPath: IndexPath) -> AnyRow.Context? {
         guard
             let view = view,
@@ -111,22 +98,19 @@ public extension Renderer {
         else { return nil }
         return .init(coordinator: coordinator, cell: cell, tableView: view, indexPath: indexPath)
     }
-    
-    subscript(headerFooterContext headerFooterType: HeaderFooterType) -> AnyHeaderFooter.Context? {
-        let _headerFooterView: UITableViewHeaderFooterView? = with(headerFooterType) {
-            switch $0 {
-            case .header(let section):
-                return view?.headerView(forSection: section)
-            case .footer(let section):
-                return view?.footerView(forSection: section)
-            }
+
+    subscript(headerFooter headerFooterType: HeaderFooterType) -> AnyHeaderFooter? {
+        switch headerFooterType {
+        case .header(let section):
+            return self[section: section].header
+        case .footer(let section):
+            return self[section: section].footer
         }
-        guard
-            let view = view,
-            let headerFooterView = _headerFooterView,
-            let coordinator = headerFooterView.coordinator
-        else { return nil }
-        return .init(coordinator: coordinator, view: headerFooterView, tableView: view, type: headerFooterType)
+    }
+    
+    @inlinable
+    subscript(section section: Int) -> Section {
+        data[section]
     }
 
     func obtainCellThenRender(at indexPath: IndexPath) -> UITableViewCell {

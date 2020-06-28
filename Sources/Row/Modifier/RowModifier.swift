@@ -51,16 +51,4 @@ public extension RowModifier {
         guard let context = context.map(rowType: Content.self) else { return }
         content.didSelect(context: context)
     }
-    
-    @inlinable
-    func willDisplay(context: Context) {
-        guard let context = context.map(rowType: Content.self) else { return }
-        content.willDisplay(context: context)
-    }
-    
-    @inlinable
-    func didEndDisplaying(context: Context) {
-        guard let context = context.map(rowType: Content.self) else { return }
-        content.didEndDisplaying(context: context)
-    }
 }

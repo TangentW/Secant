@@ -5,14 +5,22 @@
 //  Created by Tangent on 2020/6/22.
 //
 
+import Foundation
+
 @propertyWrapper
 @dynamicMemberLookup
 public struct Binding<Value> {
     
     @inlinable
-    public init(get: @escaping () -> Value, set: @escaping (Value) -> Void) {
+    public init<ID>(id: ID, get: @escaping () -> Value, set: @escaping (Value) -> Void) where ID: Hashable {
         _get = get
         _set = set
+        _id = AnyHashable(id)
+    }
+    
+    @inlinable
+    public init(get: @escaping () -> Value, set: @escaping (Value) -> Void) {
+        self.init(id: UUID(), get: get, set: set)
     }
     
     @inlinable
@@ -30,9 +38,9 @@ public struct Binding<Value> {
     @inlinable
     public var projectedValue: Binding<Value> { self }
     
-    @inlinable
     public subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Value, Subject>) -> Binding<Subject> {
         .init(
+            id: CompositeHashable(_id, keyPath),
             get: { self.wrappedValue[keyPath: keyPath] },
             set: { self.wrappedValue[keyPath: keyPath] = $0 }
         )
@@ -43,11 +51,20 @@ public struct Binding<Value> {
     
     @usableFromInline
     let _set: (Value) -> Void
+    
+    @usableFromInline
+    let _id: AnyHashable
 }
 
-extension Binding: Equatable where Value: Equatable {
+extension Binding: Hashable {
     
+    @inlinable
     public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
-        lhs.value == rhs.value
+        lhs._id == rhs._id
+    }
+    
+    @inlinable
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(_id)
     }
 }

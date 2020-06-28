@@ -25,6 +25,7 @@ extension Switch: Row {
     public var id: String { _title }
     
     public func install(cell: Cell) -> ControlEventProxy<UISwitch, Bool> {
+        cell.selectionStyle = .none
         let control = with(UISwitch()) {
             cell.accessoryView = $0
         }
@@ -33,7 +34,7 @@ extension Switch: Row {
     
     public func render(context: Context) {
         context.cell.textLabel?.text = _title
-        context.coordinator.control?.isOn = _isOn.value
+        context.coordinator.control?.setOn(_isOn.value, animated: true)
         context.coordinator.bind(_isOn)
     }
 }

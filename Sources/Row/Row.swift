@@ -27,8 +27,6 @@ public protocol Row: Differentiable, Rows {
     
     // Callbacks
     func didSelect(context: Context)
-    func willDisplay(context: Context)
-    func didEndDisplaying(context: Context)
 }
 
 public extension Row {
@@ -73,12 +71,6 @@ public extension Row {
     
     @inlinable
     func didSelect(context: Context) { }
-    
-    @inlinable
-    func willDisplay(context: Context) { }
-    
-    @inlinable
-    func didEndDisplaying(context: Context) { }
 }
 
 // MARK: - Protocol

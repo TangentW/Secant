@@ -28,7 +28,7 @@ internal extension Form {
 public extension Renderer {
     
     func render(_ form: Form) {
-        self[associated: _formUpdateCancelKey]?.cancel()
+        self[associated: _formUpdateCancelKey].take()?.cancel()
         let update: () -> Void = { [weak self] in
             self?.render(form.sections._sections)
         }
@@ -37,6 +37,10 @@ public extension Renderer {
         }
         self[associated: _formUpdateCancelKey] = Cancels.new(updateCancels)
         update()
+    }
+    
+    func invalidateForm() {
+        self[associated: _formUpdateCancelKey].take()?.cancel()
     }
 }
 

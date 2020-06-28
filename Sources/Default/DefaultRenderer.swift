@@ -42,6 +42,8 @@ extension DefaultRenderer: UITableViewDataSource {
 
 extension DefaultRenderer: UITableViewDelegate {
     
+    // Rows
+    
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         self[row: indexPath].height ?? tableView.rowHeight
     }
@@ -51,15 +53,7 @@ extension DefaultRenderer: UITableViewDelegate {
         self[row: indexPath].didSelect(context: context)
     }
     
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let context = self[rowContext: indexPath] else { return }
-        self[row: indexPath].willDisplay(context: context)
-    }
-    
-    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let context = self[rowContext: indexPath] else { return }
-        self[row: indexPath].didEndDisplaying(context: context)
-    }
+    // Header Footer
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         obtainHeaderFooterThenRender(type: .header(section: section))
@@ -77,25 +71,5 @@ extension DefaultRenderer: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard let footer = self[headerFooter: .footer(section: section)] else { return 0 }
         return footer.height ?? tableView.sectionFooterHeight
-    }
-    
-    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let context = self[headerFooterContext: .header(section: section)] else { return }
-        self[headerFooter: .header(section: section)]?.willDisplay(context: context)
-    }
-    
-    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard let context = self[headerFooterContext: .footer(section: section)] else { return }
-        self[headerFooter: .footer(section: section)]?.willDisplay(context: context)
-    }
-    
-    public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
-        guard let context = self[headerFooterContext: .header(section: section)] else { return }
-        self[headerFooter: .header(section: section)]?.didEndDisplaying(context: context)
-    }
-    
-    public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
-        guard let context = self[headerFooterContext: .footer(section: section)] else { return }
-        self[headerFooter: .footer(section: section)]?.didEndDisplaying(context: context)
     }
 }

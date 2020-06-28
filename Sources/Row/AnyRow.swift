@@ -51,20 +51,6 @@ public struct AnyRow {
             }
             row.didSelect(context: context)
         }
-        _willDisplay = {
-            guard let context = $0.map(rowType: N.self) else {
-                assertionFailure()
-                return
-            }
-            row.willDisplay(context: context)
-        }
-        _didEndDisplaying = {
-            guard let context = $0.map(rowType: N.self) else {
-                assertionFailure()
-                return
-            }
-            row.didEndDisplaying(context: context)
-        }
     }
 
     private let _row: Any
@@ -85,10 +71,6 @@ public struct AnyRow {
     let _height: () -> CGFloat?
     @usableFromInline
     let _didSelect: (Context) -> Void
-    @usableFromInline
-    let _willDisplay: (Context) -> Void
-    @usableFromInline
-    let _didEndDisplaying: (Context) -> Void
 }
 
 extension AnyRow: Row {
@@ -109,8 +91,4 @@ extension AnyRow: Row {
     public var height: CGFloat? { _height() }
     @inlinable
     public func didSelect(context: Context) { _didSelect(context) }
-    @inlinable
-    public func willDisplay(context: Context) { _willDisplay(context) }
-    @inlinable
-    public func didEndDisplaying(context: Context) { _didEndDisplaying(context) }
 }
