@@ -757,7 +757,7 @@
       };
       "OBJ_23" = {
          isa = "PBXFileReference";
-         path = "Scheduler.swift";
+         path = "Transaction.swift";
          sourceTree = "<group>";
       };
       "OBJ_24" = {
@@ -1270,9 +1270,9 @@
       "OBJ_81" = {
          isa = "PBXGroup";
          children = (
-            "Secant::Secant::Product",
             "DifferenceKit::DifferenceKit::Product",
-            "Secant::SecantTests::Product"
+            "Secant::SecantTests::Product",
+            "Secant::Secant::Product"
          );
          name = "Products";
          path = "";

@@ -12,10 +12,12 @@ public struct Switch: Equatable {
     public init(_ title: String, isOn: Binding<Bool>) {
         _title = title
         _isOn = isOn
+        _isOnValue = isOn.value
     }
     
     private let _title: String
     private let _isOn: Binding<Bool>
+    private let _isOnValue: Bool
 }
 
 extension Switch: Row {
@@ -35,6 +37,11 @@ extension Switch: Row {
     public func render(context: Context) {
         context.cell.textLabel?.text = _title
         context.coordinator.control?.setOn(_isOn.value, animated: true)
-        context.coordinator.bind(_isOn)
+        context.coordinator.bind(_isOn, with: transaction)
+    }
+    
+    public func shouldRerender(old: Switch) -> Bool {
+        old._title != _title || old._isOn != _isOn
+            || (old._isOnValue != _isOn.value && !isInCurrentTransaction)
     }
 }

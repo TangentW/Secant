@@ -39,20 +39,13 @@ public extension Renderer {
     }
     
     func render<Sections>(_ sections: Sections) where Sections: Collection, Sections.Element == Section {
-        _scheduler.schedule(immediately: !_isDisplayed) { [weak self] in
-            guard let self = self else { return }
-            let changeset = StagedChangeset(source: self.data, target: Array(sections))
-            self._update(batch: changeset)
-        }
+        let changeset = StagedChangeset(source: data, target: Array(sections))
+        _update(batch: changeset)
     }
 }
 
 private extension Renderer {
-    
-    var _isDisplayed: Bool {
-        view?.window != nil
-    }
-    
+
     func _update(batch: StagedChangeset<[Section]>) {
         view?.reload(
             using: batch,
@@ -66,16 +59,7 @@ private extension Renderer {
             setData: _set(data:)
         )
     }
-    
-    var _scheduler: Scheduler {
-        self[associated: _schedulerKey] ?? with(.init(interval: _schedulerInterval)) {
-            self[associated: _schedulerKey] = $0
-        }
-    }
 }
-
-private let _schedulerKey = AssociatedKey<Scheduler>()
-private let _schedulerInterval: TimeInterval = 1 / 60
 
 // MARK: - For implementation
 

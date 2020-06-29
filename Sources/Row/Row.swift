@@ -85,3 +85,20 @@ public extension Row {
         !shouldRerender(old: source)
     }
 }
+
+// MARK: - Transaction
+
+public extension Row {
+    
+    var transaction: Transaction {
+        Transaction {
+            $0[_rowTransactionKey] = id
+        }
+    }
+    
+    var isInCurrentTransaction: Bool {
+        Transaction.current?[_rowTransactionKey] == AnyHashable(id)
+    }
+}
+
+private let _rowTransactionKey = Transaction.Key<AnyHashable>()

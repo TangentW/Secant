@@ -23,8 +23,12 @@ public final class ControlEventProxy<Control, Value>: NSObject where Control: UI
         control.addTarget(self, action: #selector(_on(sender:)), for: event)
     }
 
-    public func bind(_ binding: Binding<Value>) {
-        _callback = { binding.value = $0 }
+    public func bind(_ binding: Binding<Value>, with transition: Transaction) {
+        _callback = { value in
+            transition.begin {
+                binding.value = value
+            }
+        }
     }
     
     @objc private func _on(sender: Any) {
